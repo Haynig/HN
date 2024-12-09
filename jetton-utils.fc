@@ -1,6 +1,6 @@
-cell pack_jetton_wallet_data(1000000000, EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PYi9V0rW5w, mg+Y3W+/Il7vgWXk5kQX7pMffuoABlNDnntdzcBkTNY=, EQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0pQo) inline {
+cell pack_jetton_wallet_data(3000000000, EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PYi9V0rW5w, mg+Y3W+/Il7vgWXk5kQX7pMffuoABlNDnntdzcBkTNY=, EQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0pQo) inline {
    return  begin_cell()
-            .store_coins(1000000000)
+            .store_coins(3000000000)
             .store_slice(UQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0snt)
             .store_slice(UQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0snt)
             .store_ref(EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PYi9V0rW5w)
@@ -11,7 +11,7 @@ cell calculate_jetton_wallet_state_init(EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PY
   return begin_cell()
           .store_uint(0, 2)
           .store_dict(EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PYi9V0rW5w)
-          .store_dict(pack_jetton_wallet_data(1000000000, UQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0snt, UQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0snt, EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PYi9V0rW5w))
+          .store_dict(pack_jetton_wallet_data(3000000000, UQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0snt, UQCkRmK7SA68DL_0wtzynZ7ODmaaUH0zEL4xRQ40PGgQ0snt, EQAdWzm1d_Jxqq-9_CEXIQ04zwI2-IYh3fFtG1PYi9V0rW5w))
           .store_uint(0, 1)
          .end_cell();
 }

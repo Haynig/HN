@@ -1,0 +1,86 @@
+import { GameFi } from '@ton/phaser-sdk'
+
+const gameFi = await GameFi.create({
+    network: 'testnet'
+    connector: {
+        // if tonconnect-manifest.json is placed in the root you can skip this option
+        manifestUrl: '/assets/tonconnect-manifest.json',
+        actionsConfiguration: {
+            // address of your Telegram Mini App to return to after the wallet is connected
+            // url you provided to BothFather during the app creation process
+            // to read more please read https://github.com/ton-community/flappy-bird#telegram-bot--telegram-web-app
+            twaReturnUrl: URL_YOU_ASSIGNED_TO_YOUR_APP
+        },
+        contentResolver: {
+            // some NFT marketplaces don't support CORS, so we need to use a proxy
+            // you are able to use any format of the URL, %URL% will be replaced with the actual URL
+            urlProxy: `${YOUR_BACKEND_URL}/${PROXY_URL}?url=%URL%`
+        },
+        // where in-game purchases come to
+        merchant: {
+            // in-game jetton purchases (FLAP)
+            // use address you got running `assets-cli deploy-jetton`
+            jettonAddress: FLAP_ADDRESS,
+            // in-game TON purchases
+            // use master wallet address you got running `assets-cli setup-env`
+            tonAddress: MASTER_WALLET_ADDRESS
+        }
+    },
+
+})
+class UiScene extends Phaser.Scene {
+    // receive gameFi instance via constructor
+    private gameFi: GameFi;
+
+    create() {
+        this.button = this.gameFi.createConnectButton({
+            scene: this,
+            // you can calculate the position for the button in your UI scene
+            x: 0,
+            y: 0,
+            button: {
+                onError: (error) => {
+                    console.error(error)
+                }
+                // other options, read the docs
+            }
+        })
+    }
+}
+function onWalletChange(wallet: Wallet | null) {
+    if (wallet) {
+        // wallet is ready to use
+    } else {
+        // wallet is disconnected
+    }
+}
+const unsubscribe = gameFi.onWalletChange(onWalletChange)
+async function submitPlayed(endpoint: string, walletAddress: string) {
+    return await (await fetch(endpoint + '/played', {
+        body: JSON.stringify({
+            tg_data: (window as any).Telegram.WebApp.initData,
+            wallet: walletAddress
+        }),
+        headers: {
+            'content-type': 'application/json'
+        },
+        method: 'POST'
+    })).json()
+}
+
+const playedInfo = await submitPlayed('http://localhost:3001', wallet.account.address);
+// inside of fetchPurchases function
+await fetch('http://localhost:3000/purchases?auth=' + encodeURIComponent((window as any).Telegram.WebApp.initData))
+// watch for purchases
+setTimeout(() => { fetchPurchases() }, 10000)
+gameFi.buyWithJetton({
+    amount: BigInt(price),
+    forwardAmount: BigInt(1),
+    forwardPayload: (window as any).Telegram.WebApp.initDataUnsafe.user.id + ':' + itemId
+});
+import { toNano } from '@ton/phaser-sdk'
+
+gameFi.buyWithTon({
+    amount: toNano(0.5),
+    comment: (window as any).Telegram.WebApp.initDataUnsafe.user.id + ':' + 1
+});
